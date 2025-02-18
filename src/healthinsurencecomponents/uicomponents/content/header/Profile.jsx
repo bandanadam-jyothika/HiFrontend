@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, FormControl, FormControlLabel, Radio, RadioGroup, Typography, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import p1 from '../../../images/p3.jpeg';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import FacebookIcon from '@mui/icons-material/Facebook';
-// import TwitterIcon from '@mui/icons-material/Twitter';
-// import XIcon from '@mui/icons-material/X';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import Nav from "../../nav/Nav";
+import Footer from "../../nav/Footer";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Cookies from 'js-cookie';
 import axios from 'axios';
@@ -16,7 +11,7 @@ import './Profile.css';
 
 const Profile = () => {
   const [insuranceType, setInsuranceType] = useState('');
-  
+
   const navigate = useNavigate();
 
   const handleChange = (event) => {
@@ -25,73 +20,62 @@ const Profile = () => {
 
   const handleNextClick = () => {
     console.log(`Selected insurance type: ${insuranceType}`);
-    sessionStorage.setItem('typeOfInsurance',insuranceType);
+    sessionStorage.setItem('typeOfInsurance', insuranceType);
     console.log(sessionStorage.getItem('typeOfInsurance'));
 
     navigate('/next-page');
 
   };
 
-  const [costumerdetails,setcustomerdetails]=useState([]);
+  const [costumerdetails, setcustomerdetails] = useState([]);
 
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     const data = sessionStorage.getItem('typeOfInsurance')
-    if(data == '')
-    {
+    if (data == '') {
       setInsuranceType('')
     }
-    else{
+    else {
       setInsuranceType(data);
     }
-   
-  },[])
-   
+
+  }, [])
+
   const value = Cookies.get("MobileNumber");
   //  console.log(value);
 
 
-    // useEffect(()=>{
-    //   // axios.get('http://183.82.106.55:9100/register/fetch/'+Value).then((res)=>{
-    //   //   console.log(res);
-    //   // })
-    //   axios.get(``).then((res)=>{console.log(res)})
-    // },[value]) 
+  // useEffect(()=>{
+  //   // axios.get('http://183.82.106.55:9100/register/fetch/'+Value).then((res)=>{
+  //   //   console.log(res);
+  //   // })
+  //   axios.get(``).then((res)=>{console.log(res)})
+  // },[value]) 
 
-    useEffect(()=>{
-      axios.get('http://183.82.106.55:9100/register/fetch/'+value).then((res)=>{
-        // console.log(res.data);
-        setcustomerdetails(res.data);
-      },[value])
-    });
-    
-    // console.log(costumerdetails.fullName);
-     Cookies.set("UserDetails",costumerdetails.gender);
-    // console.log(Cookies.get('UserDetails'))
-    Cookies.set('insuranceType',insuranceType);
-    // console.log(Cookies.get('insuranceType'))
-    // console.log(insuranceType)
+  useEffect(() => {
+    axios.get('http://183.82.106.55:9100/register/fetch/' + value).then((res) => {
+      // console.log(res.data);
+      setcustomerdetails(res.data);
+    }, [value])
+  });
+
+  // console.log(costumerdetails.fullName);
+  Cookies.set("UserDetails", costumerdetails.gender);
+  // console.log(Cookies.get('UserDetails'))
+  Cookies.set('insuranceType', insuranceType);
+  // console.log(Cookies.get('insuranceType'))
+  // console.log(insuranceType)
 
 
-    // const username = costumerdetails.fullName;
+  // const username = costumerdetails.fullName;
 
-    const username = costumerdetails.fullName
-  ? costumerdetails.fullName.charAt(0).toUpperCase() + costumerdetails.fullName.slice(1)
-  : '';
+  const username = costumerdetails.fullName
+    ? costumerdetails.fullName.charAt(0).toUpperCase() + costumerdetails.fullName.slice(1)
+    : '';
 
   return (
-    <div className="app-container d-flex flex-column" style={{ minHeight: '100vh' }}>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="container-fluid">
-          <a className="navbar-brand">
-            <img src={p1} alt="Company Logo" className="logo" style={{ height: '45px' }} />
-          </a>
-          <div className="d-flex align-items-center">
-            <AccountCircleIcon fontSize="large" className="text-dark" />
-          </div>
-        </div>
-      </nav>
-
+    <div>
+<Nav/>
       <div
         className="container flex-grow-1 d-flex align-items-start"
         style={{
@@ -197,40 +181,8 @@ const Profile = () => {
           </Typography>
         </div>
       </div>
-
-      <footer
-        className="bg-light text-center py-1 mt-5"
-        style={{
-          bottom: 0,
-          width: '100%',
-        }}
-      >
-        <div className="d-flex justify-content-center mb-2">
-          <IconButton href="https://facebook.com" target="_blank" color="primary">
-            <FacebookIcon />
-          </IconButton>
-          {/* <IconButton href="https://twitter.com" target="_blank" color="primary">
-            <TwitterIcon />
-          </IconButton> */}
-            <IconButton href="https://twitter.com" target="_blank" color="primary">
-  <img
-    src="https://allpngfree.com/apf-prod-storage-api/storage/thumbnails/twitter-new-logo-png-transparent-images-thumbnail-1697953256.jpg" // Replace with the official "X" logo URL
-    alt="X"
-    style={{ width: '24px', height: '24px' }}
-  />
-</IconButton>
-          <IconButton href="https://instagram.com" target="_blank" color="secondary">
-            <InstagramIcon />
-          </IconButton>
-          <IconButton href="https://wa.me" target="_blank" color="success">
-            <WhatsAppIcon />
-          </IconButton>
-        </div>
-        <p>
-          © All Rights Reserved 2024. <span className="text-danger fw-bold">RamanaSoft</span>
-        </p>
-      </footer>
-    </div>
+<Footer/>
+    </div >
   );
 };
 

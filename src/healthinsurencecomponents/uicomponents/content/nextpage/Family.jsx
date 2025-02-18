@@ -1,31 +1,21 @@
-
-
 import React, { useEffect, useState } from "react";
 import { Stack, Button, IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import p1 from "../../../images/p3.jpeg";
-import FacebookIcon from "@mui/icons-material/Facebook";
-// import TwitterIcon from "@mui/icons-material/Twitter";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import WhatsAppIcon from "@mui/icons-material/WhatsApp";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Nav from "../../nav/Nav";
 import Cookies from 'js-cookie';
 import './Family.css';
 import { useDispatch } from "react-redux";
 import { setSelectedRelations } from "../../../../storage/relationsSlice";
+import Footer from "../../nav/Footer";
 
 function Family() {
 
   const dispatch = useDispatch();
 
-  // const [usergender, setUserGender] = useState("");
-  // taking Gender Dynamically
-
   const usergender = Cookies.get('UserDetails');
 
-  // Taking Insurance Type Dynamic
-  // const [insurenceType, setInsurenceType] = useState("Individual");
-  const insurenceType = Cookies.get('insuranceType');
+
+  const insurenceType = sessionStorage.getItem('typeOfInsurance');
 
   console.log(insurenceType);
   const [MultipleRelation, setMultipleRelation] = useState([]);
@@ -76,131 +66,73 @@ function Family() {
         ...daughterDetails,
       ];
       dispatch(setSelectedRelations(combinedData));
-      sessionStorage.setItem("selectedRelation",JSON.stringify(combinedData));
-      
+      sessionStorage.setItem("selectedRelation", JSON.stringify(combinedData));
+
       navigate("/page"); // Navigate to the desired route
     }
   };
-console.log(MultipleRelation);
-const [insuranceType, setInsuranceType] = useState("individual"); 
+  console.log(MultipleRelation);
+  const [insuranceType, setInsuranceType] = useState("individual");
 
-useEffect(() => {
-  const storedInsuranceType = sessionStorage.getItem("typeOfInsurance");
-  const currentInsuranceType = storedInsuranceType;
-console.log(currentInsuranceType)
-  if (currentInsuranceType === "Individual") {
-    console.log("Processing individual insurance type");
-    // Handle individual-specific logic here
-    const data = sessionStorage.getItem("selectedRelation");
-    const ipdata = data ? JSON.parse(data) : [];
-    console.log(ipdata);
-    
-    let selectedRelation = ipdata.length > 0 ? [ipdata[0]] : []; // Allow only the first relation
-    console.log("Selected relation for individual:", selectedRelation);
+  useEffect(() => {
+    const storedInsuranceType = sessionStorage.getItem("typeOfInsurance");
+    const currentInsuranceType = storedInsuranceType || "Individual";
+    console.log(currentInsuranceType)
+    if (currentInsuranceType === "Individual") {
+      console.log("Processing individual insurance type");
+      // Handle individual-specific logic here
+      const data = sessionStorage.getItem("selectedRelation");
+      const ipdata = data ? JSON.parse(data) : [];
+      console.log(ipdata);
 
-    const relation = selectedRelation[0]; // Only one relation is allowed
-    if (relation === "Daughter") {
-      setDaughterDetails([relation]);
-      setSonDetails([]);
-      setMultipleRelation([]);
-    } else if (relation === "Son") {
-      setSonDetails([relation]);
-      setDaughterDetails([]);
-      setMultipleRelation([]);
-    } else {
-      setMultipleRelation([relation]);
-      setDaughterDetails([]);
-      setSonDetails([]);
-    }
+      let selectedRelation = ipdata.length > 0 ? [ipdata[0]] : []; // Allow only the first relation
+      console.log("Selected relation for individual:", selectedRelation);
 
-  } else if (currentInsuranceType === "Family") {
-    console.log("Processing family insurance type");
-
-    const data = sessionStorage.getItem("selectedRelation");
-    const ipdata = data ? JSON.parse(data) : [];
-    console.log(ipdata);
-
-    const newDaughterDetails = [];
-    const newSonDetails = [];
-    const newMultipleRelation = [];
-
-    ipdata.forEach((element) => {
-      console.log(element); // Debug log
-      if (element === "Daughter") {
-        newDaughterDetails.push(element);
-      } else if (element === "Son") {
-        newSonDetails.push(element);
+      const relation = selectedRelation[0]; // Only one relation is allowed
+      if (relation === "Daughter") {
+        setDaughterDetails([relation]);
+        setSonDetails([]);
+        setMultipleRelation([]);
+      } else if (relation === "Son") {
+        setSonDetails([relation]);
+        setDaughterDetails([]);
+        setMultipleRelation([]);
       } else {
-        newMultipleRelation.push(element);
+        setMultipleRelation([relation]);
+        setDaughterDetails([]);
+        setSonDetails([]);
       }
-    });
 
-    // Update states
-    setDaughterDetails(newDaughterDetails);
-    setSonDetails(newSonDetails);
-    setMultipleRelation(newMultipleRelation);
-  }
-}, [insuranceType]);
+    } else if (currentInsuranceType === "Family") {
+      console.log("Processing family insurance type");
 
+      const data = sessionStorage.getItem("selectedRelation");
+      const ipdata = data ? JSON.parse(data) : [];
+      console.log(ipdata);
 
-  // useEffect(() => {
-    
-  //   const data = sessionStorage.getItem("selectedRelation");
-  //   const ipdata = data ? JSON.parse(data) : [];
-    
-  //     ipdata.forEach(element => {
-  //       const inElement = JSON.stringif("element");
-  //       console.log(element,inElement)
-  //       // if(inElement == "Daughter"){setDaughterDetails(inElement)}
-  //       // if(inElement == 'Son'){setSonDetails(inElement)}
-  //     });
-  //     // setSonDetails(ipdata);
-  //     // setDaughterDetails(ipdata)
-  //   //  setMultipleRelation(ipdata);
-    
-     
-  // }, [])
+      const newDaughterDetails = [];
+      const newSonDetails = [];
+      const newMultipleRelation = [];
 
+      ipdata.forEach((element) => {
+        console.log(element); // Debug log
+        if (element === "Daughter") {
+          newDaughterDetails.push(element);
+        } else if (element === "Son") {
+          newSonDetails.push(element);
+        } else {
+          newMultipleRelation.push(element);
+        }
+      });
 
-  
+      // Update states
+      setDaughterDetails(newDaughterDetails);
+      setSonDetails(newSonDetails);
+      setMultipleRelation(newMultipleRelation);
+    }
+  }, [insuranceType]);
 
-  // useEffect(() => {
-  //   const formate=sessionStorage.getItem("insuranceType");
-  //   if(insurenceType==individual){
-
-  //   }
-
-
-  //   const data = sessionStorage.getItem("selectedRelation");
-  //   const ipdata = data ? JSON.parse(data) : [];
-  //   console.log(ipdata);
-
-  //   const newDaughterDetails = [];
-  //   const newSonDetails = [];
-  //   const newMultipleRelation = [];
-
-  //   ipdata.forEach((element) => {
-  //     console.log(element); // Check the content of the element
-  //     if (element === "Daughter") {
-  //       newDaughterDetails.push(element);
-  //     } else if (element === "Son") {
-  //       newSonDetails.push(element);
-  //     } else {
-  //       newMultipleRelation.push(element);
-  //     }
-  //   });
-
-  //   // Update states with new values
-  //   setDaughterDetails(newDaughterDetails);
-  //   setSonDetails(newSonDetails);
-  //   setMultipleRelation(newMultipleRelation);
-  // }, []);
-
-
-console.log(MultipleRelation);
-
-
-
+  console.log(MultipleRelation);
   const isContinueButtonEnabled = insurenceType === "Individual"
     ? (
       MultipleRelation.length > 0 || daughterDetails.length > 0 || sonDetails.length > 0  // Ensure that at least one relation or daughter/son detail is selected
@@ -210,18 +142,8 @@ console.log(MultipleRelation);
       (MultipleRelation.length + daughterDetails.length + sonDetails.length) >= 2
     );
 
-  // MultipleRelation.length > 0 || (daughterDetails.length > 0 || sonDetails.length > 0);
-
-  //   const isContinueButtonEnabled =
-  // (insurenceType == "Family" && MultipleRelation.length >= 2);
-  // (insurenceType == "Individual" && MultipleRelation.length === 1);
 
 
-  // const isContinueButtonEnabled =
-  // (insurenceType === "Family" &&
-  //   MultipleRelation.length === 2 &&
-  //   MultipleRelation.every(relation => relation === "daughter" || relation === "son")) ||
-  // (insurenceType === "Individual" && MultipleRelation.length === 1);
 
 
   const imageSelfIcon =
@@ -238,10 +160,6 @@ console.log(MultipleRelation);
 
   const relationValue = usergender === "male" ? "Wife" : "Husband";
 
-  //   const usergender = Cookies.get('UserDetails');
-  // const formattedGender = usergender
-  //   ? usergender.charAt(0).toUpperCase() + usergender.slice(1).toLowerCase()
-  //   : "";
 
 
   // Handle increment and decrement for Daughter and Son with a limit of 4
@@ -272,21 +190,9 @@ console.log(MultipleRelation);
 
   return (
     <div>
-      <div style={{ height: "100%" }}>
-        <nav className="navbar navbar-light bg-light">
-          <div className="ms-4">
-            <img
-              src={p1}
-              alt="Logo"
-              width="180px"
-              height="45px"
-            />
-          </div>
+      <div>
 
-          <div className="d-flex align-items-center me-4">
-            <AccountCircleIcon fontSize="large" className="text-dark" />
-          </div>
-        </nav>
+        <Nav />
       </div>
       <div>
         <div className="text-center mt-3">
@@ -655,7 +561,7 @@ console.log(MultipleRelation);
         </div>
       </div>
 
-      <footer
+      {/* <footer
         className="bg-light text-center py-1  mt-5"
         style={{
           // bottom: 700,
@@ -666,9 +572,7 @@ console.log(MultipleRelation);
           <IconButton href="https://facebook.com" target="_blank" color="primary">
             <FacebookIcon />
           </IconButton>
-          {/* <IconButton href="https://twitter.com" target="_blank" color="primary">
-            <TwitterIcon />
-          </IconButton> */}
+         
           <IconButton href="https://twitter.com" target="_blank" color="primary">
             <img
               src="https://allpngfree.com/apf-prod-storage-api/storage/thumbnails/twitter-new-logo-png-transparent-images-thumbnail-1697953256.jpg" // Replace with the official "X" logo URL
@@ -687,7 +591,8 @@ console.log(MultipleRelation);
           © All Rights Reserved 2024.{" "}
           <span className="text-danger fw-bold">RamanaSoft</span>
         </p>
-      </footer>
+      </footer> */}
+      <Footer />
     </div>
   );
 }

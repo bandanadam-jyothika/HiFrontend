@@ -674,6 +674,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Relation.css";
+// import Nav from "../../nav/Nav";
 import Nav from "../../nav/Nav";
 import Footer from "../../nav/Footer";
 import { useNavigate } from "react-router-dom";
@@ -1237,16 +1238,11 @@ function Relation() {
 
   }, []);
 
-
-
-
-
-
-  console.log(relationData, allRelations, StoreData);
+console.log(relationData, allRelations, StoreData);
 
   return (
     <div>
-      <Nav />
+      <Nav/>
       <div className="container mt-5">
         <h1 className="text-center mb-4">Customer and Relation Information</h1>
         <form onSubmit={handleSubmit}>

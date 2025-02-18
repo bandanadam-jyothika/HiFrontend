@@ -7,6 +7,8 @@ import Relation from "../uicomponents/content/age/Relation";
 // import Quotation from "../uicomponents/content/qotation/Quotation"
 import Quotationinfo from "../uicomponents/content/qotation/Quotationinfo";
 import Review from "../uicomponents/content/policyreview/Review";
+import MyAccount from "../uicomponents/content/myprofile/MyAccount";
+import MyPolicies from "../uicomponents/content/myprofile/MyPolicies";
 // import Payment from "../uicomponents/content/policyreview/Payment";
 
 
@@ -23,6 +25,8 @@ function Routing(){
     {/* <Route path="/you" element={<Quotation/>} /> */}
     <Route path="/you" element={<Quotationinfo />} />
     <Route path="/review" element={<Review />} />
+    <Route path="/my-account" element={<MyAccount />} />
+    <Route path="/my-policies" element={<MyPolicies />} />
     {/* <Route path="/payment" element={<Payment/>}/> */}
 
 
